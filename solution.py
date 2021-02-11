@@ -113,7 +113,7 @@ def heur_alternate(state):
         factor = 2
       else:
         factor = 1
-      #h += (abs(x_d - x) + abs(y_d - y))*factor
+      h += (abs(x_d - x) + abs(y_d - y))*factor
 
     x, y = state.destination
     h += (abs(x_d - x) + abs(y_d - y))
