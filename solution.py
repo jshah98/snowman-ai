@@ -97,14 +97,14 @@ def heur_alternate(state):
 
     # 5. the closer the robot is to any snowball
 
-    
+
 
 
 
     # return net value
 
     h = 0
-    for i in range(5):
+    for i in range(len(h_n)):
         h += heuristic_weights[i]*h_n[i]
 
     return h
