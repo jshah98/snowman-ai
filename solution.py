@@ -12,7 +12,6 @@ from snowman import SnowmanState, Direction, snowman_goal_state #for snowball sp
 from test_problems import PROBLEMS #20 test problems
 
 def heur_manhattan_distance(state):
-#IMPLEMENT
     '''admissible sokoban puzzle heuristic: manhattan distance'''
     '''INPUT: a snowman state'''
     '''OUTPUT: a numeric value that serves as an estimate of the distance of the state to the goal.'''
@@ -22,32 +21,43 @@ def heur_manhattan_distance(state):
     #When calculating distances, assume there are no obstacles on the grid.
     #You should implement this heuristic function exactly, even if it is tempting to improve it.
     #Your function should return a numeric value; this is the estimate of the distance to the goal.
-    return 0
+
+    ans = 0
+    factor = 1
+    x_d, y_d = state.destination
+    for x,y in state.snowballs.keys():
+      size = state.snowballs[(x,y)]
+      if size == 6:
+        factor = 3
+      elif size >= 3:
+        factor = 2
+      else:
+        factor = 1
+      ans += (abs(x_d - x) + abs(y_d - y))*factor
+    return ans
 
 
 #HEURISTICS
 def trivial_heuristic(state):
   '''trivial admissible snowball heuristic'''
   '''INPUT: a snowball state'''
-  '''OUTPUT: a numeric value that serves as an estimate of the distance of the state (# of moves required to get) to the goal.'''   
+  '''OUTPUT: a numeric value that serves as an estimate of the distance of the state (# of moves required to get) to the goal.'''
   return len(state.snowballs)
 
 def heur_alternate(state):
-#IMPLEMENT
     '''a better heuristic'''
     '''INPUT: a sokoban state'''
     '''OUTPUT: a numeric value that serves as an estimate of the distance of the state to the goal.'''
     #heur_manhattan_distance has flaws.
     #Write a heuristic function that improves upon heur_manhattan_distance to estimate distance between the current state and the goal.
     #Your function should return a numeric value for the estimate of the distance to the goal.
-    return 0
+    return heur_manhattan_distance(state)
 
 def heur_zero(state):
     '''Zero Heuristic can be used to make A* search perform uniform cost search'''
     return 0
 
 def fval_function(sN, weight):
-#IMPLEMENT
     """
     Provide a custom formula for f-value computation for Anytime Weighted A star.
     Returns the fval of the state contained in the sNode.
@@ -56,27 +66,62 @@ def fval_function(sN, weight):
     @param float weight: Weight given by Anytime Weighted A star
     @rtype: float
     """
-  
+
     #Many searches will explore nodes (or states) that are ordered by their f-value.
     #For UCS, the fvalue is the same as the gval of the state. For best-first search, the fvalue is the hval of the state.
     #You can use this function to create an alternate f-value for states; this must be a function of the state and the weight.
     #The function must return a numeric f-value.
     #The value will determine your state's position on the Frontier list during a 'custom' search.
     #You must initialize your search engine object as a 'custom' search engine if you supply a custom fval function.
-    return 0
+    return sN.gval + weight * sN.hval
 
 def anytime_weighted_astar(initial_state, heur_fn, weight=1., timebound = 5):
-#IMPLEMENT
   '''Provides an implementation of anytime weighted a-star, as described in the HW1 handout'''
   '''INPUT: a sokoban state that represents the start state and a timebound (number of seconds)'''
   '''OUTPUT: A goal state (if a goal is found), else False'''
   '''implementation of weighted astar algorithm'''
-  return False
+  start_time = os.times()[0]
+  end_time = start_time + timebound
+
+  se = SearchEngine('best_first', 'full')
+
+  # if no sol, we can't prune since there's nothing to compare with
+  cost = None
+  ans = None
+
+  while(os.times()[0] < end_time):
+    se.init_search(initial_state,snowman_goal_state,heur_fn, lambda sN : fval_function(sN,weight))
+    final = se.search(end_time-os.times()[0], cost)
+    if final:
+      ans = final
+      # prune paths that are worse
+      cost = (final.gval - 1, float('inf'), final.gval - 1)
+    else:
+      break
+    weight = weight/2
+  return ans
 
 def anytime_gbfs(initial_state, heur_fn, timebound = 5):
-#IMPLEMENT
   '''Provides an implementation of anytime greedy best-first search, as described in the HW1 handout'''
   '''INPUT: a sokoban state that represents the start state and a timebound (number of seconds)'''
   '''OUTPUT: A goal state (if a goal is found), else False'''
   '''implementation of weighted astar algorithm'''
-  return False
+  start_time = os.times()[0]
+  end_time = start_time + timebound
+
+  se = SearchEngine('best_first', 'full')
+  se.init_search(initial_state, goal_fn=snowman_goal_state, heur_fn=heur_fn)
+
+  # if no sol, we can't prune since there's nothing to compare with
+  cost = None
+  ans = None
+
+  while(os.times()[0] < end_time):
+    final = se.search(end_time-os.times()[0], cost)
+    if final:
+      ans = final
+      # prune paths that are worse
+      cost = (final.gval - 1, float('inf'), float('inf'))
+    else:
+      break
+  return ans
