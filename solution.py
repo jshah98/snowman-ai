@@ -85,26 +85,36 @@ def heur_alternate(state):
       #     return float('inf')
 
 
-    return heur_manhattan_distance(state)
-
 
     # 1. get larger snowballs to destination first
+    # factor = 1
+    # x_d, y_d = state.destination
+    # for x,y in state.snowballs:
+    #   size = state.snowballs[(x,y)]
+    #   if size == 6 or size == 3:
+    #     factor = size
+    #   elif size == 4:
+    #     factor = 5
+    #   elif size == 5:
+    #     factor = 4
+    #   else:
+    #     factor = 1+size
+    #
+    #   h += (abs(x_d - x) + abs(y_d - y))*factor
+    # return h
+
+    # euclidean distance
     factor = 1
     x_d, y_d = state.destination
-    for x,y in state.snowballs:
+    for x,y in state.snowballs.keys():
       size = state.snowballs[(x,y)]
-      if size == 6 or size == 3:
-        factor = size
-      elif size == 4:
-        factor = 5
-      elif size == 5:
-        factor = 4
+      if size == 6:
+        factor = 3
+      elif size >= 3:
+        factor = 2
       else:
-        factor = 1+size
-
-      h += (abs(x_d - x) + abs(y_d - y))*factor
-    return h
-
+        factor = 1
+      h += (((x_d - x)**2 + (y_d - y)**2)**0.5) *factor
 
 
     # 5. the closer the robot is to any snowball
