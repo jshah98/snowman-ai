@@ -103,20 +103,20 @@ def heur_alternate(state):
 
 
     # 5. the closer the robot is to any snowball
-    factor = 1
-    x_d, y_d = state.robot
-    for x,y in state.snowballs.keys():
-      size = state.snowballs[(x,y)]
-      if size == 6:
-        factor = 3
-      elif size >= 3:
-        factor = 2
-      else:
-        factor = 1
-      h += (abs(x_d - x) + abs(y_d - y))*factor
-
-    x, y = state.destination
-    h += (abs(x_d - x) + abs(y_d - y))
+    # factor = 1
+    # x_d, y_d = state.robot
+    # for x,y in state.snowballs.keys():
+    #   size = state.snowballs[(x,y)]
+    #   if size == 6:
+    #     factor = 3
+    #   elif size >= 3:
+    #     factor = 2
+    #   else:
+    #     factor = 1
+    #   h += (abs(x_d - x) + abs(y_d - y))*factor
+    #
+    # x, y = state.destination
+    # h += (abs(x_d - x) + abs(y_d - y))
 
     # return net value
     return h
