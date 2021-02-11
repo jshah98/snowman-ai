@@ -115,6 +115,8 @@ def heur_alternate(state):
         factor = 1
       #h += (abs(x_d - x) + abs(y_d - y))*factor
 
+    x, y = state.destination
+    h += (abs(x_d - x) + abs(y_d - y))
 
     # return net value
     return h
