@@ -83,15 +83,23 @@ def heur_alternate(state):
 
     # 4. obstacles are bad unless the destination is there
     #    - tunnels are okay IMPLEMENT
-    # for x,y in state.snowballs:
-    #   if (x-1, y) in state.obstacles and (x,y) not in state.destination:
-    #       return float('inf')
-    #   if (x+1, y) in state.obstacles and (x,y) not in state.destination:
-    #       return float('inf')
-    #   if (x, y-1) in state.obstacles and (x,y) not in state.destination:
-    #       return float('inf')
-    #   if (x, y+1) in state.obstacles and (x,y) not in state.destination:
-    #       return float('inf')
+    for x,y in state.snowballs:
+      if (x-1, y) in state.obstacles and (x, y+1) in state.obstacles and (x,y) not in state.destination:
+          return float('inf')
+      if (x-1, y) in state.obstacles and (x, y-1) in state.obstacles and (x,y) not in state.destination:
+          return float('inf')
+      if (x+1, y) in state.obstacles and (x, y+1) in state.obstacles and (x,y) not in state.destination:
+          return float('inf')
+      if (x+1, y) in state.obstacles and (x, y-1) in state.obstacles and (x,y) not in state.destination:
+          return float('inf')
+      # if (x-1, y) in state.obstacles and (x,y) not in state.destination:
+      #     return float('inf')
+      # if (x+1, y) in state.obstacles and (x,y) not in state.destination:
+      #     return float('inf')
+      # if (x, y-1) in state.obstacles and (x,y) not in state.destination:
+      #     return float('inf')
+      # if (x, y+1) in state.obstacles and (x,y) not in state.destination:
+      #     return float('inf')
 
 
     # 5. the closer the robot is to any snowball
