@@ -51,7 +51,63 @@ def heur_alternate(state):
     #heur_manhattan_distance has flaws.
     #Write a heuristic function that improves upon heur_manhattan_distance to estimate distance between the current state and the goal.
     #Your function should return a numeric value for the estimate of the distance to the goal.
-    return heur_manhattan_distance(state)
+
+    heuristic_weights = [1, float('inf'), 50, 1]
+    h_n = [0, 0, 0, 0]
+
+    # 1. get larger snowballs to destination first
+    factor = 1
+    x_d, y_d = state.destination
+    for x,y in state.snowballs:
+      size = state.snowballs[(x,y)]
+      if size == 6 or size == 3:
+        factor = size
+      elif size == 4:
+        factor = 5
+      elif size == 5:
+        factor = 4
+      else:
+        factor = 1+size
+
+      h_n[0] += (abs(x_d - x) + abs(y_d - y))*factor
+
+
+    # 2. corners are bad unless the destination is there
+    # 3. walls are bad unless the destination is there
+    for new_location in state.snowballs:
+      if (new_location[0] == 0 and state.destination[0] != 0) or (state.destination[0] != state.width-1 and new_location[0] == state.width-1):
+          h_n[1] += 1
+      if (state.destination[1] != 0 and new_location[1] == 0) or (state.destination[1] != state.height-1 and new_location[1] == state.height-1):
+          h_n[1] += 1
+
+
+    # 4. obstacles are bad unless the destination is there
+
+    for x,y in state.snowballs:
+      if (x-1, y) in state.obstacles and (x,y) not in state.destination:
+          h_n[2] += 1
+      if (x+1, y) in state.obstacles and (x,y) not in state.destination:
+          h_n[2] += 1
+      if (x, y-1) in state.obstacles and (x,y) not in state.destination:
+          h_n[2] += 1
+      if (x, y+1) in state.obstacles and (x,y) not in state.destination:
+          h_n[2] += 1
+
+
+
+    # 5. the closer the robot is to any snowball
+
+    
+
+
+
+    # return net value
+
+    h = 0
+    for i in range(5):
+        h += heuristic_weights[i]*h_n[i]
+
+    return h
 
 def heur_zero(state):
     '''Zero Heuristic can be used to make A* search perform uniform cost search'''
