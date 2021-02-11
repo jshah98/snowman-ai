@@ -52,8 +52,8 @@ def heur_alternate(state):
     #Write a heuristic function that improves upon heur_manhattan_distance to estimate distance between the current state and the goal.
     #Your function should return a numeric value for the estimate of the distance to the goal.
 
-    heuristic_weights = [1, float('inf'), 50, 1]
-    h_n = [0, 0, 0, 0]
+
+    h = 0
 
     # 1. get larger snowballs to destination first
     factor = 1
@@ -69,44 +69,46 @@ def heur_alternate(state):
       else:
         factor = 1+size
 
-      h_n[0] += (abs(x_d - x) + abs(y_d - y))*factor
+      h += (abs(x_d - x) + abs(y_d - y))*factor
 
 
     # 2. corners are bad unless the destination is there
     # 3. walls are bad unless the destination is there
     for new_location in state.snowballs:
       if (new_location[0] == 0 and state.destination[0] != 0) or (state.destination[0] != state.width-1 and new_location[0] == state.width-1):
-          h_n[1] += 1
+          return float('inf')
       if (state.destination[1] != 0 and new_location[1] == 0) or (state.destination[1] != state.height-1 and new_location[1] == state.height-1):
-          h_n[1] += 1
+          return float('inf')
 
 
     # 4. obstacles are bad unless the destination is there
-
-    for x,y in state.snowballs:
-      if (x-1, y) in state.obstacles and (x,y) not in state.destination:
-          h_n[2] += 1
-      if (x+1, y) in state.obstacles and (x,y) not in state.destination:
-          h_n[2] += 1
-      if (x, y-1) in state.obstacles and (x,y) not in state.destination:
-          h_n[2] += 1
-      if (x, y+1) in state.obstacles and (x,y) not in state.destination:
-          h_n[2] += 1
-
+    #    - tunnels are okay IMPLEMENT
+    # for x,y in state.snowballs:
+    #   if (x-1, y) in state.obstacles and (x,y) not in state.destination:
+    #       return float('inf')
+    #   if (x+1, y) in state.obstacles and (x,y) not in state.destination:
+    #       return float('inf')
+    #   if (x, y-1) in state.obstacles and (x,y) not in state.destination:
+    #       return float('inf')
+    #   if (x, y+1) in state.obstacles and (x,y) not in state.destination:
+    #       return float('inf')
 
 
     # 5. the closer the robot is to any snowball
-
-
-
+    factor = 1
+    x_d, y_d = state.robot
+    for x,y in state.snowballs.keys():
+      size = state.snowballs[(x,y)]
+      if size == 6:
+        factor = 3
+      elif size >= 3:
+        factor = 2
+      else:
+        factor = 1
+      h += (abs(x_d - x) + abs(y_d - y))*factor
 
 
     # return net value
-
-    h = 0
-    for i in range(len(h_n)):
-        h += heuristic_weights[i]*h_n[i]
-
     return h
 
 def heur_zero(state):
