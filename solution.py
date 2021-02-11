@@ -55,23 +55,6 @@ def heur_alternate(state):
 
     h = 0
 
-    # 1. get larger snowballs to destination first
-    factor = 1
-    x_d, y_d = state.destination
-    for x,y in state.snowballs:
-      size = state.snowballs[(x,y)]
-      if size == 6 or size == 3:
-        factor = size
-      elif size == 4:
-        factor = 5
-      elif size == 5:
-        factor = 4
-      else:
-        factor = 1+size
-
-      h += (abs(x_d - x) + abs(y_d - y))*factor
-
-
     # 2. corners are bad unless the destination is there
     # 3. walls are bad unless the destination is there
     for new_location in state.snowballs:
@@ -100,6 +83,28 @@ def heur_alternate(state):
       #     return float('inf')
       # if (x, y+1) in state.obstacles and (x,y) not in state.destination:
       #     return float('inf')
+
+
+    return heur_manhattan_distance(state)
+
+
+    # 1. get larger snowballs to destination first
+    factor = 1
+    x_d, y_d = state.destination
+    for x,y in state.snowballs:
+      size = state.snowballs[(x,y)]
+      if size == 6 or size == 3:
+        factor = size
+      elif size == 4:
+        factor = 5
+      elif size == 5:
+        factor = 4
+      else:
+        factor = 1+size
+
+      h += (abs(x_d - x) + abs(y_d - y))*factor
+    return h
+
 
 
     # 5. the closer the robot is to any snowball
