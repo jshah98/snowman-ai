@@ -54,6 +54,7 @@ def heur_alternate(state):
 
     robo_factor = 0.5
     dest_factor = 1
+    robo_dest_factor = 0.5
 
     h = 0
 
@@ -77,50 +78,8 @@ def heur_alternate(state):
           return float('inf')
       if (x+1, y) in state.obstacles and (x, y-1) in state.obstacles and (x,y) not in state.destination:
           return float('inf')
-      # if (x-1, y) in state.obstacles and (x,y) not in state.destination:
-      #     return float('inf')
-      # if (x+1, y) in state.obstacles and (x,y) not in state.destination:
-      #     return float('inf')
-      # if (x, y-1) in state.obstacles and (x,y) not in state.destination:
-      #     return float('inf')
-      # if (x, y+1) in state.obstacles and (x,y) not in state.destination:
-      #     return float('inf')
 
-
-
-    # 1. get larger snowballs to destination first
-    # factor = 1
-    # x_d, y_d = state.destination
-    # for x,y in state.snowballs:
-    #   size = state.snowballs[(x,y)]
-    #   if size == 6 or size == 3:
-    #     factor = size
-    #   elif size == 4:
-    #     factor = 5
-    #   elif size == 5:
-    #     factor = 4
-    #   else:
-    #     factor = 1+size
-    #
-    #   h += (abs(x_d - x) + abs(y_d - y))*factor
-    # return h
-
-
-
-
-    # 5. the closer the robot is to any snowball
-    # focus = 0
-    # if state.destination not in state.snowballs:
-    #     focus = 0
-    #     # robo_factor = robo_factor/2
-    # else:
-    #     if state.snowballs[state.destination] == 3:
-    #         focus = 1
-    #         # robo_factor = robo_factor/2
-    #     elif state.snowballs[state.destination] == 6:
-    #         return 0
-
-    # manhattan distance
+    # closer the snowballs to the destination the better
     factor = 1
     x_d, y_d = state.destination
     for x,y in state.snowballs:
@@ -133,6 +92,7 @@ def heur_alternate(state):
         factor = 1
       h += (abs(x_d - x) + abs(y_d - y))*factor*dest_factor
 
+    # closer the robot to the snowballs the better
     factor = 1
     x_d, y_d = state.robot
     for x,y in state.snowballs:
@@ -145,30 +105,6 @@ def heur_alternate(state):
         factor = 1
       h += (abs(x_d - x) + abs(y_d - y))*factor*robo_factor
 
-
-    # x_d, y_d = state.robot
-    # for x,y in state.snowballs:
-    #     if state.snowballs[(x,y)] == focus:
-    #         if abs(x_d - x) + abs(y_d - y) == 1:
-    #             x_d, y_d = state.destination
-    #             h+= (((x_d - x)**2 + (y_d - y)**2)**0.5)*robo_factor*dest_factor
-    #         else:
-    #             h+= (((x_d - x)**2 + (y_d - y)**2)**0.5)*robo_factor
-    #         break
-
-
-    # factor = 1
-    # x_d, y_d = state.robot
-    # for x,y in state.snowballs.keys():
-    #   size = state.snowballs[(x,y)]
-    #   if size == 6:
-    #     factor = 3
-    #   elif size >= 3:
-    #     factor = 2
-    #   else:
-    #     factor = 1
-    #   h += (abs(x_d - x) + abs(y_d - y))*factor
-    #
     # x, y = state.destination
     # h += (abs(x_d - x) + abs(y_d - y))
 
