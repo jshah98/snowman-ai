@@ -130,7 +130,7 @@ def heur_alternate(state):
 
     for x,y in state.snowballs:
         if state.snowballs[(x,y)] == focus:
-            h+= (((x_d - x)**2 + (y_d - y)**2)**0.5)*5
+            h+= (((x_d - x)**2 + (y_d - y)**2)**0.5)
 
     # factor = 1
     # x_d, y_d = state.robot
