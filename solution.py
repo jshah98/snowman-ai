@@ -52,8 +52,8 @@ def heur_alternate(state):
     #Write a heuristic function that improves upon heur_manhattan_distance to estimate distance between the current state and the goal.
     #Your function should return a numeric value for the estimate of the distance to the goal.
 
-    robo_factor = 0.5
-    dest_factor = 1
+    robo_factor = 2
+    dest_factor = 3
     robo_dest_factor = 1
 
     h = 0
