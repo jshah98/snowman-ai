@@ -85,8 +85,6 @@ if __name__ == '__main__':
 
       print("*************************************")
       print("PROBLEM {}".format(i))
-      p.print_state()
-      print()
 
       s0 = PROBLEMS[i] #Final problems are hardest
       se = SearchEngine('best_first', 'full')
