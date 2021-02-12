@@ -81,10 +81,12 @@ if __name__ == '__main__':
 
     solved = 0; unsolved = []; benchmark = 15; timebound = TIMEOUT #time limit
     lengths = [54, 82, 30, 49, 71, 68, 29, 47, 38, 30, 68, 76, 53, -99, -99, 117, -99, -99, 64, -99]
-    for i in range(0, len(PROBLEMS)):
+    for i, p in enumerate(PROBLEMS):
 
       print("*************************************")
       print("PROBLEM {}".format(i))
+      p.print_state()
+      print()
 
       s0 = PROBLEMS[i] #Final problems are hardest
       se = SearchEngine('best_first', 'full')
