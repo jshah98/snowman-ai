@@ -54,7 +54,7 @@ def heur_alternate(state):
 
     robo_factor = 0.5
     dest_factor = 1
-    robo_dest_factor = 0.5
+    robo_dest_factor = 1
 
     h = 0
 
@@ -105,8 +105,9 @@ def heur_alternate(state):
         factor = 1
       h += (abs(x_d - x) + abs(y_d - y))*factor*robo_factor
 
-    # x, y = state.destination
-    # h += (abs(x_d - x) + abs(y_d - y))
+    # robot being closer to the destination is good
+    x, y = state.destination
+    h += (abs(x_d - x) + abs(y_d - y))*robo_dest_factor
 
     # return net value
     return h
