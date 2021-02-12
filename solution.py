@@ -52,9 +52,9 @@ def heur_alternate(state):
     #Write a heuristic function that improves upon heur_manhattan_distance to estimate distance between the current state and the goal.
     #Your function should return a numeric value for the estimate of the distance to the goal.
 
-    dest_factor = 3
+    dest_factor = 4
     robo_factor = 1
-    robo_dest_factor = 0
+    robo_dest_factor = 2
 
     h = 0
 
@@ -157,7 +157,7 @@ def anytime_weighted_astar(initial_state, heur_fn, weight=1., timebound = 5):
       cost = (final.gval - 1, float('inf'), final.gval - 1)
     else:
       break
-    weight = weight-1
+    weight = weight/2
   return ans
 
 def anytime_gbfs(initial_state, heur_fn, timebound = 5):
