@@ -52,6 +52,8 @@ def heur_alternate(state):
     #Write a heuristic function that improves upon heur_manhattan_distance to estimate distance between the current state and the goal.
     #Your function should return a numeric value for the estimate of the distance to the goal.
 
+    robo_factor = 2
+    dest_factor = 1
 
     h = 0
 
@@ -114,7 +116,7 @@ def heur_alternate(state):
         factor = 2
       else:
         factor = 1
-      h += (((x_d - x)**2 + (y_d - y)**2)**0.5) *factor
+      h += (((x_d - x)**2 + (y_d - y)**2)**0.5) *factor*dest_factor
 
 
     # 5. the closer the robot is to any snowball
@@ -122,15 +124,17 @@ def heur_alternate(state):
     x_d, y_d = state.robot
     if state.destination not in state.snowballs:
         focus = 0
+        robo_factor = robo_factor/2
     else:
         if state.snowballs[state.destination] == 3:
             focus = 1
+            robo_factor = robo_factor/2
         elif state.snowballs[state.destination] == 6:
             return 0
 
     for x,y in state.snowballs:
         if state.snowballs[(x,y)] == focus:
-            h+= (((x_d - x)**2 + (y_d - y)**2)**0.5)
+            h+= (((x_d - x)**2 + (y_d - y)**2)**0.5)*robo_factor
 
     # factor = 1
     # x_d, y_d = state.robot
