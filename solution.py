@@ -131,7 +131,7 @@ def heur_alternate(state):
         factor = 2
       else:
         factor = 1
-      h += (((x_d - x)**2 + (y_d - y)**2)**0.5) *factor*dest_factor
+      h += (abs(x_d - x) + abs(y_d - y))*factor*dest_factor
 
 
     # x_d, y_d = state.robot
