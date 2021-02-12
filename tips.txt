@@ -1,0 +1,5 @@
+1. get snowballs closer to destination
+2. make sure you don't push a snowball into a wall unless the destination is at that wall
+3. make sure you don't push a snowball into a corner formed by an obstacle or by a wall unless the destination is at that corner
+4. it's sometimes better to move a smaller snowball before moving a larger snowball
+5. getting closer to any snowball is good
