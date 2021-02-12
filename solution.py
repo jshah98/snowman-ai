@@ -118,6 +118,20 @@ def heur_alternate(state):
 
 
     # 5. the closer the robot is to any snowball
+    focus = 0
+    x_d, y_d = state.robot
+    if state.destination not in state.snowballs:
+        focus = 0
+    else:
+        if state.snowballs[state.destination] == 3:
+            focus = 1
+        elif state.snowballs[state.destination] == 6:
+            return 0
+
+    for x,y in state.snowballs:
+        if state.snowballs[(x,y)] == focus:
+            h+= (((x_d - x)**2 + (y_d - y)**2)**0.5)*5
+
     # factor = 1
     # x_d, y_d = state.robot
     # for x,y in state.snowballs.keys():
