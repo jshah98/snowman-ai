@@ -157,7 +157,7 @@ def anytime_weighted_astar(initial_state, heur_fn, weight=1., timebound = 5):
       cost = (final.gval - 1, float('inf'), final.gval - 1)
     else:
       break
-    weight = weight/4
+    weight = weight-1
   return ans
 
 def anytime_gbfs(initial_state, heur_fn, timebound = 5):
